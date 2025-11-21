@@ -1,0 +1,119 @@
+# filename: accounting_new.py
+# تاریخ: 1402/11/20 - بازنویسی با معماری بهتر
+
+class Karmand:
+    def __init__(self, esm, hoghoogh_paye):
+        self.esm = esm
+        self.hoghoogh_paye = hoghoogh_paye
+        self.mahaleh_ha = []
+
+class ZamanKar:
+    def __init__(self, saat_kar, saat_ezafe=0):
+        self.saat_kar = saat_kar
+        self.saat_ezafe = saat_ezafe
+
+class MohasebehHoghoogh:
+    def mohasebeh_nakhales(self, karmand, zaman_kar, hazineh=0):
+        hoghoogh_asli = karmand.hoghoogh_paye * zaman_kar.saat_kar / 160
+        
+        if zaman_kar.saat_ezafe > 0:
+            ezafe_kar = (karmand.hoghoogh_paye / 160) * 1.5 * zaman_kar.saat_ezafe
+        else:
+            ezafe_kar = 0
+            
+        return hoghoogh_asli + ezafe_kar + hazineh
+
+class MohasebehMaliat:
+    def __init__(self, darsad_maliat):
+        self.darsad_maliat = darsad_maliat
+    
+    def mohasebeh_maliat(self, mablagh):
+        return mablagh * self.darsad_maliat
+
+class MahalehKonandeh:
+    def __init__(self):
+        self.mahaleh_ha = []
+    
+    def ezafe_mahaleh(self, karmand, mablagh, tozih):
+        karmand.mahaleh_ha.append({
+            'mablagh': mablagh,
+            'tozih': tozih
+        })
+        return True
+
+class SystemHesabdarJadid:
+    def __init__(self):
+        self.karmandan = []
+        self.mohasebe_hoghoogh = MohasebehHoghoogh()
+        self.mahaleh_konandeh = MahalehKonandeh()
+    
+    def sabt_karmand(self, karmand):
+        self.karmandan.append(karmand)
+        print(f"کارمند {karmand.esm} ثبت شد")
+    
+    def pardakht_hoghoogh(self, karmand, zaman_kar, mohasebe_maliat, hazineh=0):
+        # محاسبه ناخالص
+        nakhales = self.mohasebe_hoghoogh.mohasebe_nakhales(karmand, zaman_kar, hazineh)
+        
+        # محاسبه مالیات
+        maliat = mohasebe_maliat.mohasebe_maliat(nakhales)
+        
+        # کسر مابه‌التفاوت
+        kole_mahaleh = sum(mahaleh['mablagh'] for mahaleh in karmand.mahaleh_ha)
+        
+        # حقوق خالص
+        khaless = nakhales - maliat - kole_mahaleh
+        
+        natije = {
+            'esm': karmand.esm,
+            'nakhales': nakhales,
+            'maliat': maliat,
+            'mahaleh': kole_mahaleh,
+            'khaless': khaless
+        }
+        
+        return natije
+    
+    def gereport(self):
+        print("=== سیستم جدید حسابداری ===")
+        
+        for karmand in self.karmandan:
+            # برای سادگی فرض میکنیم همه پارامترها ثابت هستند
+            zaman = ZamanKar(160, 10)
+            maliat = MohasebehMaliat(0.1)
+            natije = self.pardakht_hoghoogh(karmand, zaman, maliat, 1_000_000)
+            
+            print(f"{natije['esm']}: {natije['khaless']:,.0f} تومان")
+            
+            if karmand.mahaleh_ha:
+                print(f"  کسورات: {natije['mahaleh']:,.0f} تومان")
+
+# استفاده از سیستم جدید
+print("🚀 سیستم حسابداری جدید - نسخه 2.0")
+
+# ایجاد سیستم
+system_jadid = SystemHesabdarJadid()
+
+# ثبت کارمندها
+karmand1 = Karmand("علی رضایی", 50_000_000)
+karmand2 = Karmand("مریم حسینی", 45_000_000)
+
+system_jadid.sabt_karmand(karmand1)
+system_jadid.sabt_karmand(karmand2)
+
+# کسر بیمه برای علی
+system_jadid.mahaleh_konandeh.ezafe_mahaleh(karmand1, 500_000, "بیمه")
+
+# گرفتن گزارش
+system_jadid.gereport()
+
+# حالا به راحتی می‌تونیم مالیات متفاوت برای هرکس داشته باشیم
+print("\n--- با مالیات متفاوت ---")
+maliat_pareh_time = MohasebehMaliat(0.05)  # مالیات کمتر برای پاره وقت
+zaman_pareh = ZamanKar(120, 0)  # پاره وقت
+
+karmand3 = Karmand("ناصر احمدی", 30_000_000)
+system_jadid.sabt_karmand(karmand3)
+
+natije = system_jadid.pardakht_hoghoogh(karmand3, zaman_pareh, maliat_pareh_time)
+print(f"{natije['esm']}: {natije['khaless']:,.0f} تومان (پاره وقت)")
