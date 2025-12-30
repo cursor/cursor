@@ -2,7 +2,7 @@
 
 [Cursor](https://cursor.com) is a code editor built for programming with AI.
 
-Creating new posts on [the forum](https://forum.cursor.com/) for bugs or feature requests is much appreciated 🙂 Feel free to react to the ones you'd like us to prioritize.
+Creating new posts on [the forum](https://forum.cursor.com/) for bugs or feature requests is much appreciated 🙂 Feel free to react to the ones you'd like us to priortize.
 
 ## Getting Started
 
