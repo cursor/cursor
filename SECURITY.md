@@ -10,5 +10,5 @@ Instead, please email us at [security-reports@cursor.com](mailto:security-report
 
 We commit to acknowledging vulnerability reports immediately, and will work to fix active vulnerabilities as soon as we can. Critical incidents will be communicated via email to all affected users.
 
-We appreciate your help in making Cursor more secure for everyone. Thank you for your support and responsible disclosure.
+We appreciate your help in making Cursor more secure for everyone. Thank you for your support and responsible disclosure..
 
