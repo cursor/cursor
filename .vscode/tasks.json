@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Generate Index Log",
+      "type": "shell",
+      "command": "find . -type f > .vscode/index.log",
+      "problemMatcher": []
+    }
+  ]
+}
