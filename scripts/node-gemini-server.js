@@ -51,31 +51,37 @@ function startMT5TerminalService() {
 }
 
 /**
- * Perform automated EA Compilation & Migration
+ * Perform automated EA Compilation & Migration for GeminiController.mq5 and GeminiBot.mq5
  */
 function compileExpertAdvisor() {
-    const eaPath = path.join(__dirname, '..', 'src', 'GeminiBot.mq5');
-    log(`Checking Expert Advisor source target: ${eaPath}`);
-    if (fs.existsSync(eaPath)) {
+    const controllerPath = path.join(__dirname, '..', 'src', 'GeminiController.mq5');
+    const botPath = path.join(__dirname, '..', 'src', 'GeminiBot.mq5');
+
+    log(`Checking Expert Advisor source targets: ${controllerPath}, ${botPath}`);
+    const targets = [controllerPath, botPath].filter(p => fs.existsSync(p));
+
+    if (targets.length > 0) {
         if (process.platform === 'win32') {
-            const compileCmd = `"${METAEDITOR_PATH}" /compile:"${eaPath}" /log:"${path.join(logDir, 'compile.log')}"`;
-            log(`Running MetaEditor compilation: ${compileCmd}`);
-            exec(compileCmd, (err, stdout) => {
-                log(`MetaEditor compilation output: ${stdout || 'Done'}`);
+            targets.forEach(target => {
+                const compileCmd = `"${METAEDITOR_PATH}" /compile:"${target}" /log:"${path.join(logDir, 'compile.log')}"`;
+                log(`Running MetaEditor compilation: ${compileCmd}`);
+                exec(compileCmd, (err, stdout) => {
+                    log(`MetaEditor compilation output for ${path.basename(target)}: ${stdout || 'Done'}`);
+                });
             });
         } else {
-            log('EA GeminiBot.mq5 validated and ready for MT5 Windows Server HA deployment.');
+            log('Modular EAs (GeminiController.mq5 & GeminiBot.mq5) validated and ready for MT5 Windows Server HA deployment.');
         }
         return true;
     }
-    log('GeminiBot.mq5 source file not found.');
+    log('No Expert Advisor source targets found.');
     return false;
 }
 
 /**
  * Perform automated Git push/pull managed by google.com.jules[bot]
  */
-function syncGitWithGitHub(commitMsg = "auto: addept and sync uploaded Huawei recycle bin files & EA updates [google.com.jules[bot]]") {
+function syncGitWithGitHub(commitMsg = "auto: addept and sync uploaded Huawei recycle bin files & modular EAs [google.com.jules[bot]]") {
     return new Promise((resolve) => {
         log("Initiating automatic Git pull/push workflow via google.com.jules[bot]...");
 
@@ -175,7 +181,7 @@ const server = http.createServer((req, res) => {
             broker: BROKER,
             system: 'Windows Server Self-Hosting HA System',
             botManager: 'google.com.jules[bot]',
-            eaTarget: 'src/GeminiBot.mq5',
+            masterController: 'src/GeminiController.mq5',
             timestamp: new Date().toISOString()
         }));
     } else if (req.url === '/migrate-ea') {
@@ -187,7 +193,7 @@ const server = http.createServer((req, res) => {
             action: 'EA Migration & Compilation',
             model: GEMINI_MODEL,
             target: 'Exness MetaTrader 5 Live',
-            eaFile: 'src/GeminiBot.mq5',
+            masterController: 'src/GeminiController.mq5',
             compiled: compiled
         }));
     } else if (req.url === '/start-mt5') {
