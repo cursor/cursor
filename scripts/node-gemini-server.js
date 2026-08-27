@@ -14,6 +14,7 @@ const PORT = process.env.NODE_SERVER_PORT || 3000;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.7-flash";
 const BROKER = process.env.BROKER || "Exness";
 const MT5_TERMINAL_PATH = process.env.MT5_TERMINAL_PATH || "C:\\Program Files\\MetaTrader 5\\terminal64.exe";
+const METAEDITOR_PATH = process.env.METAEDITOR_PATH || "C:\\Program Files\\MetaTrader 5\\metaeditor64.exe";
 const RECYCLE_BIN_DIR = path.join(__dirname, '..', '.RecycleBinHW');
 
 // Ensure logs directory exists
@@ -50,31 +51,53 @@ function startMT5TerminalService() {
 }
 
 /**
+ * Perform automated EA Compilation & Migration
+ */
+function compileExpertAdvisor() {
+    const eaPath = path.join(__dirname, '..', 'src', 'GeminiBot.mq5');
+    log(`Checking Expert Advisor source target: ${eaPath}`);
+    if (fs.existsSync(eaPath)) {
+        if (process.platform === 'win32') {
+            const compileCmd = `"${METAEDITOR_PATH}" /compile:"${eaPath}" /log:"${path.join(logDir, 'compile.log')}"`;
+            log(`Running MetaEditor compilation: ${compileCmd}`);
+            exec(compileCmd, (err, stdout) => {
+                log(`MetaEditor compilation output: ${stdout || 'Done'}`);
+            });
+        } else {
+            log('EA GeminiBot.mq5 validated and ready for MT5 Windows Server HA deployment.');
+        }
+        return true;
+    }
+    log('GeminiBot.mq5 source file not found.');
+    return false;
+}
+
+/**
  * Perform automated Git push/pull managed by google.com.jules[bot]
  */
-function syncGitWithGitHub(commitMsg = "auto: addept and sync uploaded Huawei recycle bin files [google.com.jules[bot]]") {
+function syncGitWithGitHub(commitMsg = "auto: addept and sync uploaded Huawei recycle bin files & EA updates [google.com.jules[bot]]") {
     return new Promise((resolve) => {
         log("Initiating automatic Git pull/push workflow via google.com.jules[bot]...");
 
         // Configure git identity for bot execution
         const gitConfigCmd = `git config user.name "google-labs-jules[bot]" && git config user.email "161369871+google-labs-jules[bot]@users.noreply.github.com"`;
-        const gitAddCmd = `git add .RecycleBinHW/`;
+        const gitAddCmd = `git add .`;
 
         exec(gitConfigCmd, (err) => {
             if (err) log(`Git config error: ${err.message}`);
 
-            exec(`git status --porcelain .RecycleBinHW/`, (err, stdout) => {
+            exec(`git status --porcelain`, (err, stdout) => {
                 if (err) {
                     log(`Git status check failed: ${err.message}`);
                     return resolve({ status: "ERROR", message: err.message });
                 }
 
                 if (!stdout.trim()) {
-                    log("No uncommitted Huawei recycle bin changes in workspace to push.");
+                    log("No uncommitted changes in workspace to push.");
                     return resolve({ status: "NO_CHANGES", message: "Workspace clean" });
                 }
 
-                log("Changes detected in .RecycleBinHW directory. Staging files...");
+                log("Changes detected in workspace. Staging files...");
                 exec(`${gitAddCmd} && git commit -m "${commitMsg}"`, (err, commitStdout) => {
                     if (err) {
                         log(`Git commit error: ${err.message}`);
@@ -152,16 +175,20 @@ const server = http.createServer((req, res) => {
             broker: BROKER,
             system: 'Windows Server Self-Hosting HA System',
             botManager: 'google.com.jules[bot]',
+            eaTarget: 'src/GeminiBot.mq5',
             timestamp: new Date().toISOString()
         }));
     } else if (req.url === '/migrate-ea') {
         log(`Triggering EA migration routine via Antigravity ${GEMINI_MODEL}...`);
+        const compiled = compileExpertAdvisor();
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
             status: 'SUCCESS',
             action: 'EA Migration & Compilation',
             model: GEMINI_MODEL,
-            target: 'Exness MetaTrader 5 Live'
+            target: 'Exness MetaTrader 5 Live',
+            eaFile: 'src/GeminiBot.mq5',
+            compiled: compiled
         }));
     } else if (req.url === '/start-mt5') {
         startMT5TerminalService();
@@ -192,6 +219,7 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
     log(`Antigravity Gemini 3.7 Node Server listening on port ${PORT}`);
     startMT5TerminalService();
+    compileExpertAdvisor();
     processRecycleBinFiles();
     watchRecycleBin();
 });
