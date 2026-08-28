@@ -13,6 +13,8 @@ const zlib = require('zlib');
 const PORT = process.env.NODE_SERVER_PORT || 3000;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.7-flash";
 const BROKER = process.env.BROKER || "Exness";
+const NETWORK_BANDWIDTH = process.env.NETWORK_BANDWIDTH || "10Gbps Tier-1 Dedicated";
+const HARDWARE_PROFILE = process.env.HARDWARE_PROFILE || "Dedicated Forex SSD Server (Full Resources)";
 const MT5_TERMINAL_PATH = process.env.MT5_TERMINAL_PATH || "C:\\Program Files\\MetaTrader 5\\terminal64.exe";
 const METAEDITOR_PATH = process.env.METAEDITOR_PATH || "C:\\Program Files\\MetaTrader 5\\metaeditor64.exe";
 const RECYCLE_BIN_DIR = path.join(__dirname, '..', '.RecycleBinHW');
@@ -179,7 +181,9 @@ const server = http.createServer((req, res) => {
             status: 'ONLINE',
             model: GEMINI_MODEL,
             broker: BROKER,
-            system: 'Windows Server Self-Hosting HA System',
+            hardware: HARDWARE_PROFILE,
+            bandwidth: NETWORK_BANDWIDTH,
+            system: 'Dedicated Forex HA VPS (Full Resources, Ultra-low Latency)',
             botManager: 'google.com.jules[bot]',
             masterController: 'src/GeminiController.mq5',
             timestamp: new Date().toISOString()
