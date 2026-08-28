@@ -84,14 +84,22 @@ function compileExpertAdvisor() {
 function syncGitWithGitHub(commitMsg = "auto: addept and sync uploaded Huawei recycle bin files & modular EAs [google.com.jules[bot]]") {
     return new Promise((resolve) => {
         log("Initiating automatic Git pull/push workflow via google.com.jules[bot]...");
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> origin/jules-7621746438528792519-9bcbbd70
         // Configure git identity for bot execution
         const gitConfigCmd = `git config user.name "google-labs-jules[bot]" && git config user.email "161369871+google-labs-jules[bot]@users.noreply.github.com"`;
         const gitAddCmd = `git add .`;
 
         exec(gitConfigCmd, (err) => {
             if (err) log(`Git config error: ${err.message}`);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> origin/jules-7621746438528792519-9bcbbd70
             exec(`git status --porcelain`, (err, stdout) => {
                 if (err) {
                     log(`Git status check failed: ${err.message}`);
@@ -159,7 +167,11 @@ function watchRecycleBin() {
     if (!fs.existsSync(RECYCLE_BIN_DIR)) {
         fs.mkdirSync(RECYCLE_BIN_DIR, { recursive: true });
     }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> origin/jules-7621746438528792519-9bcbbd70
     fs.watch(RECYCLE_BIN_DIR, (eventType, filename) => {
         if (filename) {
             log(`Detected change (${eventType}) in ${RECYCLE_BIN_DIR} for file: ${filename}`);

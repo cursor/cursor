@@ -99,7 +99,11 @@ void OnTick()
       double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
       double sl  = (InpStopLoss > 0) ? ask - InpStopLoss * _Point : 0;
       double tp  = (InpTakeProfit > 0) ? ask + InpTakeProfit * _Point : 0;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> origin/jules-7621746438528792519-9bcbbd70
       Print("Bullish signal detected. Opening BUY position on ", _Symbol);
       ExtTrade.Buy(InpLotSize, _Symbol, ask, sl, tp, "GeminiBot Buy");
    }
