@@ -1,15 +1,40 @@
-# Gemini 3.6 Flash / 3.7 Exness Project
+# 🚀 Antigravity Gemini 3.7 & Exness MetaTrader 5 High Availability (HA) System
 
-Automated MetaTrader 5 Expert Advisor & Node Server Management System for Exness Live Trading on Windows Server Self-Hosting High Availability (HA) Infrastructure.
+**Managed by:** `google.com.jules[bot]`
+**Repository:** `https://github.com/Mouy-leng172/Gemini-3.6-flash-Exness-f52ca206.git`
+**Secondary Remote:** `https://github.com/Mouy-leng172/A6..9V-GenX_FX.main.git`
 
-## 🚀 Features & Components
+---
 
-- **Modular EA Architecture:** Master EA (`src/GeminiController.mq5`) controlling pluggable strategy modules (`Strategy_MA.mqh`, `Strategy_Breakout.mqh`, `Strategy_TrailingStop.mqh`).
-- **Antigravity Node Server:** Server (`scripts/node-gemini-server.js`) providing HTTP endpoints for EA migration, MT5 status monitoring, and auto-sync.
-- **Huawei Recycle Bin Auto-Adapter:** Automatic watcher for `.RecycleBinHW` files with `gzip` log decompression and auto-staging.
-- **Git Auto-Sync Workflow:** Automated push/pull operations managed by `google.com.jules[bot]`.
-- **Full Lifecycle Script:** Executable pipeline (`scripts/full-lifecycle.sh` and `launch-all.sh`) for automated build, balance checks, and production launch.
+## ⚡ Single-Tap 24/7 VPS Deployment
 
-## 🌐 Network Patch Map
+Deploy 24/7 background execution with a single command:
 
-For a full map of network nodes, ports, endpoints, and data flow architecture, see **[NETWORK_PATCH_MAP.md](NETWORK_PATCH_MAP.md)**.
+### Option 1: Native Systemd Service / Script
+```bash
+./deploy-vps-247.sh
+```
+
+### Option 2: Docker Compose Container (Auto-Restart 24/7)
+```bash
+docker compose up -d
+```
+
+---
+
+## 🛠️ Key Features & Architecture
+
+1. **Modular EA Strategy Architecture:**
+   - Entry Point Master Controller: `src/GeminiController.mq5`
+   - Standalone Strategy EA: `src/GeminiBot.mq5`
+   - Modular Strategies: `Strategy_MA.mqh`, `Strategy_Breakout.mqh`, `Strategy_TrailingStop.mqh`
+   - Shared Utilities: `RiskManager.mqh` (Drawdown & Loss Protection), `Logger.mqh`
+
+2. **Huawei Recycle Bin Auto-Adapter (`.RecycleBinHW`):**
+   - File watcher automatically decompresses `.gzip` logs and auto-commits updates under `google.com.jules[bot]`.
+
+3. **High Availability (HA) Control Server:**
+   - REST API on Port `3000`: `/health`, `/migrate-ea`, `/start-mt5`, `/process-recyclebin`, `/sync-git`.
+
+4. **Network Topology & Documentation:**
+   - Full patch map in `NETWORK_PATCH_MAP.md`.

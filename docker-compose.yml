@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  gemini-vps-trading:
+    build: .
+    container_name: gemini-vps-247
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NODE_SERVER_PORT=3000
+      - GEMINI_MODEL=gemini-3.7-flash
+      - BROKER=Exness
+    volumes:
+      - ./.RecycleBinHW:/app/.RecycleBinHW
+      - ./logs:/app/logs
+      - ./src:/app/src
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
