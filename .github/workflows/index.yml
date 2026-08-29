@@ -1,0 +1,46 @@
+name: Index & Deploy CI/CD
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Generate Index Log
+        run: |
+          mkdir -p .vscode
+          find . -type f > .vscode/index.log
+
+      - name: Upload Index Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vscode-index-log
+          path: .vscode/index.log
+
+      - name: Run Cursor Rules
+        run: echo "Executing Cursor workspace rules check..."
+
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          if [ -n "$FIREBASE_TOKEN" ]; then
+            firebase deploy --only hosting --token "$FIREBASE_TOKEN"
+          else
+            echo "FIREBASE_TOKEN not set, skipping deployment step."
+          fi

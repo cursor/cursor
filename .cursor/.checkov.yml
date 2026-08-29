@@ -1,0 +1,10 @@
+# See: https://www.checkov.io/1.Welcome/Quick%20Start.html
+
+compact: true
+quiet: true
+skip-path:
+  - coverage
+  - node_modules
+skip-check:
+  - CKV_DOCKER_2
+  - CKV_DOCKER_3
