@@ -1,0 +1,24 @@
+# See: https://github.com/DavidAnson/markdownlint
+
+# Unordered list style
+MD004:
+  style: dash
+
+# Disable line length for tables
+MD013:
+  tables: false
+
+# Ordered list item prefix
+MD029:
+  style: one
+
+# Spaces after list markers
+MD030:
+  ul_single: 1
+  ol_single: 1
+  ul_multi: 1
+  ol_multi: 1
+
+# Code block style
+MD046:
+  style: fenced

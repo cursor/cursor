@@ -1,0 +1,18 @@
+# See: https://github.com/licensee/licensed/blob/main/docs/configuration.md
+
+sources:
+  npm: true
+
+allowed:
+  - apache-2.0
+  - bsd-2-clause
+  - bsd-3-clause
+  - isc
+  - mit
+  - cc0-1.0
+  - other
+
+ignored:
+  npm:
+    # Used by Rollup.js when building in GitHub Actions
+    - '@rollup/rollup-linux-x64-gnu'

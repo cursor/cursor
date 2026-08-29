@@ -1,0 +1,107 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test-typescript:
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: npm-ci
+        run: npm ci
+
+      - name: Check Format
+        id: npm-format-check
+        run: npm run format:check
+
+      - name: Lint
+        id: npm-lint
+        run: npm run lint
+
+      - name: Test
+        id: npm-ci-test
+        run: npm run ci-test
+
+  test-docker:
+    name: Docker Tests
+    runs-on: ubuntu-latest
+
+    # Run a local registry to push to
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5001:5000
+
+    env:
+      TEST_TAG: localhost:5001/actions/container-toolkit-action:latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Docker BuildX
+        id: setup-buildx
+        uses: docker/setup-buildx-action@v4
+        with:
+          install: true
+          driver-opts: network=host
+
+      - name: Build the Container
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ env.TEST_TAG }}
+
+      - name: Run the Container
+        id: run
+        env:
+          INPUT_MILLISECONDS: 2000
+        run: |
+          docker run \
+            --env INPUT_MILLISECONDS="${{ env.INPUT_MILLISECONDS }}" \
+            --rm ${{ env.TEST_TAG }}
+
+  test-action:
+    name: GitHub Actions Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Test Local Action
+        id: test-action
+        uses: ./
+        with:
+          milliseconds: 2000
+
+      - name: Print Output
+        id: output
+        run: echo "${{ steps.test-action.outputs.time }}"
