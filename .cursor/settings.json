@@ -1,8 +1,15 @@
 {
-  "workspaceRoot": ".",
-  "defaultInterpreter": "powershell",
-  "logging": {
-    "enabled": true,
-    "path": "./logs/cursor.log"
-  }
+  "github.copilot.chat.reviewSelection.instructions": [
+    {
+      "text": "Review the code changes carefully before accepting them."
+    }
+  ],
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use conventional commit message format."
+    }
+  ],
+  "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+    { "text": "Always include a list of key changes." }
+  ]
 }

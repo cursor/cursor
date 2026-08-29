@@ -1,0 +1,21 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - govet
+    - ineffassign
+    - staticcheck
+  disable:
+    - errcheck
+
+  exclusions:
+    paths:
+      - generated
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
