@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "rules": [
+    {
+      "pattern": "src/**/*.mq5",
+      "action": "compile",
+      "command": "metaeditor64.exe /compile:${file} /log:${workspaceRoot}/logs/compile.log"
+    },
+    {
+      "pattern": "src/**/*.ps1",
+      "action": "run",
+      "command": "powershell -ExecutionPolicy Bypass -File ${file}"
+    },
+    {
+      "pattern": "firebase.json",
+      "action": "deploy",
+      "command": "firebase deploy --only hosting"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "workspaceRoot": ".",
+  "defaultInterpreter": "powershell",
+  "logging": {
+    "enabled": true,
+    "path": "./logs/cursor.log"
+  }
+}
