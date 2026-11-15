@@ -1,0 +1,17 @@
+{
+  "name": "cursor-community-repo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:health": "tsx scripts/docs-healthcheck.ts",
+    "sdk:login": "tsx scripts/sdk-login.ts",
+    "start": "npm --prefix grok-bot-access start"
+  },
+  "dependencies": {
+    "@cursor/sdk": "^1.4.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
