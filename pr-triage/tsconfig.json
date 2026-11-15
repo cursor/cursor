@@ -1,0 +1,14 @@
+{
+  // Type-checking only (npm run check): the framework runs bot/ code
+  // directly through tsx, so nothing is compiled.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["bot/**/*", "evals/**/*"]
+}
