@@ -1,0 +1,27 @@
+---
+description: Cursor SDK Python Agent.resume conventions for grok-bot-resume
+globs: grok-bot-resume/**/*.py
+alwaysApply: false
+---
+
+# Cursor SDK — Python resume
+
+- Use `Agent.resume(agent_id, AgentOptions(...))` for cross-process follow-ups. Runtime: `bc-…` → cloud; else pass `local=LocalAgentOptions(cwd=…)`.
+- Always dispose with `with Agent.resume(...) as agent:` and call `run.wait()` (stream is optional).
+- Pass `api_key` from `CURSOR_API_KEY` explicitly. Never hardcode keys or print them.
+- Inline `mcp_servers` are **not** persisted — re-pass on every resume via `--mcp-json ./mcp.servers.json` (X MCP from `.cursor/mcp.json`, map-only shape).
+- Never paste X bearer tokens; OAuth goes through `auth.CLIENT_ID` + Connect.
+- Distinguish failures: thrown `CursorAgentError` → exit 1; `result.status == "error"` → exit 2.
+- Log `agent.agent_id` and `run.id` immediately after `send()`.
+
+```python
+# ❌ BAD — no dispose, no wait, ambient key only
+agent = Agent.resume(agent_id)
+agent.send("go")
+
+# ✅ GOOD
+with Agent.resume(agent_id, AgentOptions(api_key=api_key, model="composer-2.5")) as agent:
+    run = agent.send("go")
+    print(agent.agent_id, run.id)
+    result = run.wait()
+```

@@ -1,0 +1,14 @@
+{
+  "name": "grok-bot-access",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Private linked access surface for Grok Bot",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

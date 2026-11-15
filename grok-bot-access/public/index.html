@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grok Bot</title>
+    <meta
+      name="description"
+      content="Private access surface for Grok Bot — open the desktop agent or continue in context."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true">
+      <div class="dune dune-a"></div>
+      <div class="dune dune-b"></div>
+      <div class="grain"></div>
+    </div>
+
+    <header class="topbar">
+      <p class="viewer" id="viewer" data-state="loading">Checking access…</p>
+    </header>
+
+    <main class="hero">
+      <p class="eyebrow">Private access</p>
+      <h1 class="brand">Grok Bot</h1>
+      <p class="lede">
+        Open the desktop agent from this signed-in surface, or jump into a
+        linked session with the same context.
+      </p>
+      <div class="actions" id="actions">
+        <a class="cta primary is-disabled" href="grokbot://open" aria-disabled="true" tabindex="-1">Open Grok Bot</a>
+        <a class="cta ghost is-disabled" href="sand://open" aria-disabled="true" tabindex="-1">Open via sand://</a>
+      </div>
+      <p class="access-note" id="access-note" hidden></p>
+      <p class="hint" id="scheme-hint">
+        Uses <code>grokbot://</code> and <code>sand://</code> — install the
+        Linux desktop entry so those handlers resolve.
+      </p>
+    </main>
+
+    <section class="context" aria-labelledby="context-title">
+      <h2 id="context-title">Linked context</h2>
+      <p>
+        This page is the private web door. The Linux launcher
+        (<code>grok-bot.desktop</code>) and the Agent SDK host
+        (<code>grok-prompt-coach</code>) share the same Grok Bot surface —
+        identity here, local launch there, deploy when a service account is
+        attached.
+      </p>
+    </section>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

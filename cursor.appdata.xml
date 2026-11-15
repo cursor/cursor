@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+	<id>cursor.desktop</id>
+	<metadata_license>MIT</metadata_license>
+	<project_license>MIT</project_license>
+	<name>Cursor</name>
+	<url type="homepage">https://cursor.com</url>
+	<summary>The AI Code Editor.</summary>
+</component>
