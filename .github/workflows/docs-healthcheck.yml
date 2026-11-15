@@ -1,0 +1,46 @@
+name: Docs healthcheck
+
+# Optional CI: runs the Cursor SDK docs auditor when CURSOR_API_KEY is configured
+# as a repository secret. Skips cleanly when the secret is absent so forks stay green.
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "SECURITY.md"
+      - ".github/ISSUE_TEMPLATE/**"
+      - "scripts/docs-healthcheck.ts"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  docs-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Audit community docs with Cursor SDK
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          if [ -z "$CURSOR_API_KEY" ]; then
+            echo "CURSOR_API_KEY secret not set — skipping live Agent.prompt audit."
+            echo "Add the secret (https://cursor.com/dashboard/cloud-agents) to enable this check."
+            exit 0
+          fi
+          npm run docs:health
+
+      - name: Upload report
+        if: hashFiles('docs-health-report.md') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-health-report
+          path: docs-health-report.md

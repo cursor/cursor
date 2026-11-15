@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+docs-health-report.md
+.env
+.env.*
+!/.env.example
