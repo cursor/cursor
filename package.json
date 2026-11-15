@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "docs:health": "tsx scripts/docs-healthcheck.ts",
-    "sdk:login": "tsx scripts/sdk-login.ts"
+    "sdk:login": "tsx scripts/sdk-login.ts",
+    "start": "npm --prefix grok-bot-access start"
   },
   "dependencies": {
     "@cursor/sdk": "^1.4.0"
