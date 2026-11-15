@@ -1,0 +1,4 @@
+{
+  "install": "cd '/agent/repos/cursor' || exit $?\nnpm --prefix grok-bot-access install",
+  "start": "cd '/agent/repos/cursor' || exit $?\nexec npm --prefix grok-bot-access start"
+}
