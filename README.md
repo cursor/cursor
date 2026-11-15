@@ -1,6 +1,6 @@
 # Cursor
 
-Creating new posts on [our forum](https://forum.cursor.com/) for bugs or feature requests is much appreciated!
+For **bugs and feature requests**, use the [community forum](https://forum.cursor.com/) rather than GitHub Issues—we monitor the forum as our primary channel.
 
 ## Getting Started
 
@@ -15,6 +15,7 @@ Head over to [our website](https://cursor.com/) to download Cursor.
 - Download: https://cursor.com
 - Features: https://cursor.com/features
 - Community forum: https://forum.cursor.com/
+- Bugs & feedback: [forum.cursor.com](https://forum.cursor.com/) (preferred over GitHub Issues)
 
 ## Security
 
